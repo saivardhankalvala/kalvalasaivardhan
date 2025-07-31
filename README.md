@@ -1,60 +1,182 @@
 
-# 👋 Hi there, I'm Kalvala Sai Vardhan!
+# 🧠 AI Resume Analyzer
 
-Welcome to my GitHub profile! I'm passionate about building impactful software and contributing to meaningful projects.  
-Here you'll find my latest work in AI, data analytics, and full-stack development.
+An interactive Flask web application that analyzes candidate resumes against a Job Description (JD) and computes a **hybrid similarity score** using:
 
-🎓 **Recent Computer Science Graduate** | Aspiring **Data Analyst**, **Java & Python Developer**  
-🔭 **Currently working on:** Power BI Dashboards, AI Resume Analyzer  
-🌱 **Learning:** DAX, SQL, Streamlit, Django  
-📫 **Reach me:** [LinkedIn](https://linkedin.com/in/saivardhankalvala16) | kalvalasaivardhan2002@gmail.com  
-💼 **Domains:** AI, Web Scraping, Data Visualization, Web Apps
+* **TF-IDF vectorization**
+* **Semantic embeddings** (via Sentence Transformers)
+* **Skill overlap**
 
----
-
-## 🛠️ Tech Stack
-
-### 👨‍💻 Languages  
-![C](https://img.shields.io/badge/C-blue?style=flat-square&logo=c)  
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)  
-![Java](https://img.shields.io/badge/Java-orange?style=flat-square&logo=java)  
-![HTML5](https://img.shields.io/badge/HTML5-e34c26?style=flat-square&logo=html5&logoColor=white)  
-![CSS3](https://img.shields.io/badge/CSS3-264de4?style=flat-square&logo=css3&logoColor=white)
-
-
-### 🧰 Frameworks & Libraries  
-![Django](https://img.shields.io/badge/Django-092E20?style=flat-square&logo=django)  
-![Flask](https://img.shields.io/badge/Flask-black?style=flat-square&logo=flask)  
-![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat-square&logo=streamlit)
-
-### 📊 Data & Analytics  
-![Power BI](https://img.shields.io/badge/PowerBI-F2C811?style=flat-square&logo=powerbi&logoColor=black)  
-![Pandas](https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=pandas)  
-![NumPy](https://img.shields.io/badge/Numpy-013243?style=flat-square&logo=numpy)  
-![SQL](https://img.shields.io/badge/SQL-4479A1?style=flat-square&logo=postgresql)
-
-### 🌐 Web & Automation  
-![Selenium](https://img.shields.io/badge/Selenium-43B02A?style=flat-square&logo=selenium)  
-![BeautifulSoup](https://img.shields.io/badge/BeautifulSoup-3e863d?style=flat-square)  
-![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github)
+This tool helps **recruiters**, **HR professionals**, and **job seekers** rank resumes by relevance in seconds — with a clean UI and production-friendly backend.
 
 ---
 
-## 📈 GitHub Stats
+## ✨ Features
 
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=saivardhankalvala&show_icons=true&theme=radical)
+✅ Upload **multiple resumes** (PDF/DOCX)
+✅ Paste or type a **Job Description**
+✅ Auto-extract:
+
+* Name, email, phone
+* Skills
+* Education details
+* **Estimated years of experience**
+
+✅ Compute a **hybrid similarity score**:
+
+* **TF-IDF cosine similarity** (on resume & JD)
+* **Semantic similarity** using Sentence Transformers
+* **Skill overlap percentage**
+
+✅ Responsive UI with Bootstrap 5
+✅ Fully modular codebase for easy extension
 
 ---
 
-## 🔗 Projects You Should Check Out
-- 🔍 **Resume Analyzer using NLP + Streamlit**
-- 🚗 **Used Car Data Scraper (Cars24)**
-- 📊 **Student Performance Dashboard (Power BI)**
-- 💪 **Gym Management Web App Prototype**
-- 🧠 **Fake Profile Detection with ML**
+## 🧠 Scoring Logic
+
+We use a **weighted hybrid scoring system** defined in [`utils/scoring.py`](./utils/scoring.py):
+
+* `50%`: Semantic similarity (`SentenceTransformer`)
+* `30%`: TF-IDF cosine similarity (`sklearn`)
+* `20%`: Skill overlap ratio
+
+This approach blends keyword relevance with contextual matching and hard skill alignment.
 
 ---
 
-## 💡 Let's Connect!
-> I'm always looking to learn, collaborate, and grow. Whether you're hiring, mentoring, or building something cool — feel free to reach out!
+## ⚙️ Tech Stack
+
+* **Backend**: Flask (Python)
+* **Parsing**: `pdfminer.six`, `python-docx`
+* **NLP**: `NLTK`, `scikit-learn`, `Sentence Transformers`
+* **Frontend**: Bootstrap 5, custom CSS, Jinja2
+* **Structure**: Modular utilities, configuration files, static templates
+
+---
+
+## 📁 Project Structure
+
+```bash
+Resume-Analyzer/
+├── app.py                 # Main Flask application
+├── config.py              # Configuration file (model, secret key)
+├── requirements.txt       # Python dependencies
+├── README.md              # Project documentation
+├── templates/
+│   └── index.html         # UI template (Jinja2 + Bootstrap)
+├── utils/
+│   ├── extractor.py       # Text parsing & field extraction
+│   └── scoring.py         # Hybrid scoring logic (TF-IDF + semantic + skills)
+└── skills.txt             # Custom skill keywords list (one per line)
+```
+
+---
+
+## 📦 Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/SamyakAnand/Resume-Analyzer.git
+cd Resume-Analyzer
+
+# (Optional) Create virtual environment
+python -m venv venv
+# Activate:
+# Windows
+venv\Scripts\activate
+# macOS/Linux
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+---
+
+## 🚀 Usage
+
+1. Make sure `skills.txt` exists in the project root (one skill per line).
+2. Launch the Flask app:
+
+   ```bash
+   python app.py
+   ```
+3. Open browser at: [http://127.0.0.1:5000](http://127.0.0.1:5000)
+4. Upload resumes and input a JD → view extracted info and relevance scores:
+
+   * Name, Email, Phone
+   * Education
+   * Skills
+   * Experience (years)
+   * Score (0–100%)
+
+---
+
+## 📊 Example Output
+
+![Demo Screenshot](https://github.com/SamyakAnand/Resume-Analyzer/blob/main/images/Screenshot%202025-07-16%20192647.png)
+
+---
+
+## 🧪 How It Works (Pipeline)
+
+1. **Parse** uploaded resumes (`pdfminer` / `python-docx`)
+2. **Clean & tokenize** text (`NLTK`)
+3. **Extract**:
+
+   * Contact info (regex)
+   * Skills (from `skills.txt`)
+   * Education (keywords)
+   * Years of experience (pattern recognition)
+4. **Score** each resume:
+
+   * TF-IDF cosine similarity (resume ↔ JD)
+   * Semantic similarity (via `SentenceTransformer`)
+   * Skill match ratio
+5. **Combine scores** → render sorted results table on UI
+
+---
+
+## 🙌 Credits
+
+Built with ❤️ by:
+
+* 👨‍💻 [Samyak Anand](https://github.com/SamyakAnand)
+* 👨‍💻 [Thottempudi Koushik](https://github.com/Koushik900)
+* 👨‍💻 [Sai Vardhan Kalvala](https://github.com/saivardhankalvala)
+* 👩‍💻 [Swetha](https://github.com/swethar6232)
+* 👩‍💻 [Rasmitha Ravi](https://github.com/RasmithaRavi)
+
+Thanks to open-source contributors behind Flask, NLTK, scikit-learn, and HuggingFace 🤗.
+
+---
+
+## 🔗 Connect
+
+* GitHub: [@SamyakAnand](https://github.com/SamyakAnand)
+* LinkedIn: [@samyakanand](https://linkedin.com/in/samyakanand)
+
+<details>
+<summary>Other Contributors</summary>
+
+* GitHub: [@Koushik900](https://github.com/Koushik900)
+  LinkedIn: [Thottempudi Koushik](https://www.linkedin.com/in/tk-koushik-1362bb200/)
+
+* GitHub: [@saivardhankalvala](https://github.com/saivardhankalvala)
+  LinkedIn: [Sai Vardhan Kalvala](https://in.linkedin.com/in/saivardhankalvala16)
+
+* GitHub: [@swethar6232](https://github.com/swethar6232)
+
+* GitHub: [@RasmithaRavi](https://github.com/RasmithaRavi)
+
+</details>
+
+---
+
+## ⚖️ License
+
+Licensed under the **MIT License** — free for personal, academic, or commercial use. 🌐
+
+---
 
